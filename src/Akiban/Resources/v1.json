@@ -1,0 +1,98 @@
+{
+    "apiVersion": "v1",
+    "serviceFullName" : "Akiban Server",
+    "signatureVersion" : "v1",
+    "operations": {
+        "CreateEntity": {
+            "httpMethod": "POST",
+            "uri": "/v1/entity/{name}",
+            "summary": "Creates a new entity.",
+            "responseClass": "EntityOutput",
+            "parameters": {
+                "name": {
+                    "location": "uri",
+                    "description": "Name of entity to create an instance of.",
+                    "required": true
+                },
+                "data": {
+                    "location": "body",
+                    "description": "The JSON document with data for this entity.",
+                    "required": true
+                }
+            }
+        },
+        "GetEntity": {
+            "httpMethod": "GET",
+            "uri": "/v1/entity/{name}/{id}",
+            "summary": "Retrieves a single entity.",
+            "responseClass": "EntityOutput",
+            "parameters": {
+                "name": {
+                    "location": "uri",
+                    "description": "Name of entity to retrieve.",
+                    "required": true
+                },
+                "id": {
+                    "location": "uri",
+                    "description": "ID of named entity to retrieve.",
+                    "required": true
+                }
+            }
+        },
+        "GetEntities" : {
+            "httpMethod": "GET",
+            "uri": "/v1/entity/{name}",
+            "summary": "Retrieves a list of entities.",
+            "responseClass": "GetEntityOutput",
+            "parameters": {
+                "name": {
+                    "location": "uri",
+                    "description": "Name of entities to retrieve.",
+                    "required": true
+                }
+            }
+        },
+        "DeleteEntity": {
+            "httpMethod": "DELETE",
+            "uri": "/v1/entity/{name}/{id}",
+            "summary": "Deletes an entity.",
+            "responseClass": "DeleteEntityOutput",
+            "parameters": {
+                "name": {
+                    "location": "uri",
+                    "description": "Name of entity to delete.",
+                    "required": true
+                },
+                "id": {
+                    "location": "uri",
+                    "description": "ID of named entity to delete.",
+                    "required": true
+                }
+            }
+        }
+    },
+    "models": {
+        "EntityOutput": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "location": "statusCode",
+                    "type": "integer"
+                },
+                "data": {
+                    "location": "body",
+                    "type": "string"
+                }
+            }
+        },
+        "DeleteEntityOutput": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "location": "statusCode",
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
