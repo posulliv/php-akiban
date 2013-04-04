@@ -7,7 +7,7 @@
             "httpMethod": "POST",
             "uri": "/v1/entity/{name}",
             "summary": "Creates a new entity.",
-            "responseClass": "EntityOutput",
+            "responseClass": "DataOutput",
             "parameters": {
                 "name": {
                     "location": "uri",
@@ -25,7 +25,7 @@
             "httpMethod": "GET",
             "uri": "/v1/entity/{name}/{id}",
             "summary": "Retrieves a single entity.",
-            "responseClass": "EntityOutput",
+            "responseClass": "DataOutput",
             "parameters": {
                 "name": {
                     "location": "uri",
@@ -43,7 +43,7 @@
             "httpMethod": "GET",
             "uri": "/v1/entity/{name}",
             "summary": "Retrieves a list of entities.",
-            "responseClass": "GetEntityOutput",
+            "responseClass": "DataOutput",
             "parameters": {
                 "name": {
                     "location": "uri",
@@ -56,7 +56,7 @@
             "httpMethod": "DELETE",
             "uri": "/v1/entity/{name}/{id}",
             "summary": "Deletes an entity.",
-            "responseClass": "DeleteEntityOutput",
+            "responseClass": "NoDataOutput",
             "parameters": {
                 "name": {
                     "location": "uri",
@@ -74,7 +74,7 @@
             "httpMethod": "POST",
             "uri": "/v1/model/parse/{name}",
             "summary": "Generate an entity.json from a JSON document and optionally instantiate it.",
-            "responseClass": "ModelOutput",
+            "responseClass": "DataOutput",
             "parameters": {
                 "name": {
                     "location": "uri",
@@ -97,7 +97,7 @@
             "httpMethod": "GET",
             "uri": "/v1/sql/query",
             "summary": "Run a single SQL statement.",
-            "responseClass": "QueryOutput",
+            "responseClass": "DataOutput",
             "parameters": {
                 "q": {
                     "location": "query",
@@ -110,7 +110,7 @@
             "httpMethod": "POST",
             "uri": "/v1/sql/execute",
             "summary": "Execute Multiple SQL statements within a single transaction.",
-            "responseClass": "QueryOutput",
+            "responseClass": "DataOutput",
             "parameters": {
                 "queries": {
                     "location": "body",
@@ -121,7 +121,7 @@
         }
     },
     "models": {
-        "EntityOutput": {
+        "DataOutput": {
             "type": "object",
             "properties": {
                 "status": {
@@ -134,38 +134,12 @@
                 }
             }
         },
-        "DeleteEntityOutput": {
+        "NoDataOutput": {
             "type": "object",
             "properties": {
                 "status": {
                     "location": "statusCode",
                     "type": "integer"
-                }
-            }
-        },
-        "ModelOutput": {
-            "type": "object",
-            "properties": {
-                "status": {
-                    "location": "statusCode",
-                    "type": "integer"
-                },
-                "data": {
-                    "location": "body",
-                    "type": "string"
-                }
-            }
-        },
-        "QueryOutput": {
-            "type": "object",
-            "properties": {
-                "status": {
-                    "location": "statusCode",
-                    "type": "integer"
-                },
-                "data": {
-                    "location": "body",
-                    "type": "string"
                 }
             }
         }
