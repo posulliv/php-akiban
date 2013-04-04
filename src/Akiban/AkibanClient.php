@@ -19,7 +19,6 @@ namespace Akiban;
 use Guzzle\Common\Collection;
 use Guzzle\Service\Client;
 use Guzzle\Service\Description\ServiceDescription;
-use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 
 class AkibanClient extends Client
