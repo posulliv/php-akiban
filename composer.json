@@ -1,5 +1,5 @@
 {
-    "name": "akiban",
+    "name": "akiban/akiban-php",
     "homepage": "http://github.com/akiban/php-akiban",
     "description": "REST Service Client for Akiban",
     "keywords": ["akiban","database"],
