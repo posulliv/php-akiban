@@ -44,9 +44,12 @@ class AkibanClient extends Client
         return $response['data'];
     }
 
-    public function createEntity($entityName, $data, $schemaName = null)
+    public function createEntity($entityName, $data, $schemaName = null, $createModel = false)
     {
         $entityPath = $schemaName === null ? $entityName : $schemaName . "." . $entityName;
+        if ($createModel) {
+            $this->createEntityModel($entityPath, $data);
+        }
         $command = $this->getCommand('CreateEntity', array('name' => $entityPath, 'data' => $data));
         $command->set('command.headers', array('Content-type' => 'application/json'));
         try {
