@@ -69,6 +69,42 @@
                     "required": true
                 }
             }
+        },
+        "CreateModel": {
+            "httpMethod": "POST",
+            "uri": "/v1/model/parse/{name}",
+            "summary": "Generate an entity.json from a JSON document and optionally instantiate it.",
+            "responseClass": "ModelOutput",
+            "parameters": {
+                "name": {
+                    "location": "uri",
+                    "description": "Name of the new entity.",
+                    "required": true
+                },
+                "data": {
+                    "location": "body",
+                    "description": "The JSON document with data for this entity.",
+                    "required": true
+                },
+                "create": {
+                    "location": "query",
+                    "description": "If true, create the generated entity.",
+                    "required": false
+                }
+            }
+        },
+        "ExecuteQuery": {
+            "httpMethod": "GET",
+            "uri": "/v1/sql/query",
+            "summary": "Run a single SQL statement.",
+            "responseClass": "QueryOutput",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "SQL query to run.",
+                    "required": true
+                }
+            }
         }
     },
     "models": {
@@ -91,6 +127,32 @@
                 "status": {
                     "location": "statusCode",
                     "type": "integer"
+                }
+            }
+        },
+        "ModelOutput": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "location": "statusCode",
+                    "type": "integer"
+                },
+                "data": {
+                    "location": "body",
+                    "type": "string"
+                }
+            }
+        },
+        "QueryOutput": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "location": "statusCode",
+                    "type": "integer"
+                },
+                "data": {
+                    "location": "body",
+                    "type": "string"
                 }
             }
         }

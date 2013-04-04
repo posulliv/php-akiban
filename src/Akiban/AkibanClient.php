@@ -50,7 +50,7 @@ class AkibanClient extends Client
         $command = $this->getCommand('CreateEntity', array('name' => $entityPath, 'data' => $data));
         $command->set('command.headers', array('Content-type' => 'application/json'));
         try {
-            $reponse = $this->execute($command);
+            $response = $this->execute($command);
         } catch (ClientErrorResponseException $e) {
             return $e->getMessage();
         }
@@ -67,5 +67,29 @@ class AkibanClient extends Client
             return $e->getMessage();
         }
         return $response['status'];
+    }
+
+    public function executeSqlQuery($sql)
+    {
+        $command = $this->getCommand('ExecuteQuery', array('q' => $sql));
+        try {
+            $response = $this->execute($command);
+        } catch (ClientErrorResponseException $e) {
+            return $e->getMessage();
+        }
+        return $response['data'];
+    }
+
+    public function createEntityModel($entityName, $data, $schemaName = null)
+    {
+        $entityPath = $schemaName === null ? $entityName : $schemaName . "." . $entityName;
+        $command = $this->getCommand('CreateModel', array('name' => $entityPath, 'data' => $data, 'create' => 'true'));
+        $command->set('command.headers', array('Content-type' => 'application/json'));
+        try {
+            $response = $this->execute($command);
+        } catch (ClientErrorResponseException $e) {
+            return $e->getMessage();
+        }
+        return $response['data'];
     }
 }
