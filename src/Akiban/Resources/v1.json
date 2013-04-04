@@ -105,6 +105,19 @@
                     "required": true
                 }
             }
+        },
+        "ExecuteQueries": {
+            "httpMethod": "POST",
+            "uri": "/v1/sql/execute",
+            "summary": "Execute Multiple SQL statements within a single transaction.",
+            "responseClass": "QueryOutput",
+            "parameters": {
+                "queries": {
+                    "location": "body",
+                    "description": "SQL queries to run.",
+                    "required": true
+                }
+            }
         }
     },
     "models": {

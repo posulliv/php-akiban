@@ -96,6 +96,21 @@ class AkibanClient extends Client
         return $response['data'];
     }
 
+    public function executeMultipleSqlQueries($queries = array())
+    {
+        $sql = '';
+        foreach ($queries as $query) {
+            $sql .= $query . ";";
+        }
+        $command = $this->getCommand('ExecuteQueries', array('queries' => $sql));
+        try {
+            $response = $this->execute($command);
+        } catch (ClientErrorResponseException $e) {
+            return $e->getMessage();
+        }
+        return $response['data'];
+    }
+
     public function createEntityModel($entityName, $data, $schemaName = null)
     {
         $entityPath = $schemaName === null ? $entityName : $schemaName . "." . $entityName;
