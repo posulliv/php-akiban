@@ -10,7 +10,7 @@ Create `composer.json` file in your project root:
 ```
 {
     "require": {
-        "guzzle/guzzle": "~3.1.1"
+        "akiban/akiban-php": "dev-master"
     }
 }
 ```
