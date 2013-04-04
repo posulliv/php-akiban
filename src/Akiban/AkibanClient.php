@@ -45,6 +45,15 @@ class AkibanClient extends Client
         return $client;
     }
 
+    /**
+     * Retrieve a single instance of the given entity. Successful response
+     * is a JSON array.
+     *
+     * @param string $entityName name of the entity
+     * @param int $entityId identifier of the entity
+     * @param string $schemaName schema entity is contained within
+     * @return string JSON array
+     */
     public function getEntity($entityName, $entityId, $schemaName = null)
     {
         $entityPath = $this->constructEntityPath($entityName, $schemaName);
@@ -52,6 +61,16 @@ class AkibanClient extends Client
         return $this->executeCommand($command, 'data');
     }
 
+    /**
+     * Create a new instance of the entity. Successful response is a JSON object
+     * containing identifiers for all created entities.
+     *
+     * @param string $entityName name of the entity
+     * @param string $data JSON document with data for entity
+     * @param string $schemaName schema entity is contained within
+     * @param boolean $createModel whether to create the model for this entity or not
+     * @return string JSON array
+     */
     public function createEntity($entityName, $data, $schemaName = null, $createModel = false)
     {
         $entityPath = $this->constructEntityPath($entityName, $schemaName);
@@ -63,6 +82,14 @@ class AkibanClient extends Client
         return $this->executeCommand($command, 'data');
     }
 
+    /**
+     * Destroy an instance of this entity.
+     *
+     * @param string $entityName name of the entity
+     * @param int $entityId identifier of the entity
+     * @param string $schemaName schema entity is contained within
+     * @return string status code returned from server
+     */
     public function deleteEntity($entityName, $entityId, $schemaName = null)
     {
         $entityPath = $this->constructEntityPath($entityName, $schemaName);
@@ -70,12 +97,24 @@ class AkibanClient extends Client
         return $this->executeCommand($command, 'status');
     }
 
+    /**
+     * Execute a single SQL statement.
+     *
+     * @param string $sql statement to execute
+     * @return string JSON array with results
+     */
     public function executeSqlQuery($sql)
     {
         $command = $this->getCommand('ExecuteQuery', array('q' => $sql));
         return $this->executeCommand($command, 'data');
     }
 
+    /**
+     * Execute multiple SQL statements within a single transaction.
+     *
+     * @param array $queries each element is an individual SQL statement
+     * @return string JSON array with results (1 field per statement executed)
+     */
     public function executeMultipleSqlQueries($queries = array())
     {
         $sql = '';
@@ -86,6 +125,14 @@ class AkibanClient extends Client
         return $this->executeCommand($command, 'data');
     }
 
+    /**
+     * Create a model from a JSON document.
+     *
+     * @param string $entityName name of the entity
+     * @param string $data JSON document with specification for entity
+     * @param string $schemaName schema entity is contained within
+     * @return string JSON array describing the parsed document
+     */
     public function createEntityModel($entityName, $data, $schemaName = null)
     {
         $entityPath = $this->constructEntityPath($entityName, $schemaName);
@@ -94,11 +141,18 @@ class AkibanClient extends Client
         return $this->executeCommand($command, 'data');
     }
 
+    /**
+     * @return string JSON array with server version
+     */
     public function getServerVersion()
     {
         return $this->executeCommand($this->getCommand('Version'), 'data');
     }
 
+    /**
+     * Execute the given command and from the result object,
+     * return the specified element.
+     */
     private function executeCommand($command, $returnElement)
     {
         try {
@@ -109,6 +163,10 @@ class AkibanClient extends Client
         return $response[$returnElement];
     }
 
+    /**
+     * Construct a full entity path. Format is:
+     *  $schemaName.$entityName
+     */
     private function constructEntityPath($entityName, $schemaName)
     {
         return ($schemaName === null ? $entityName : $schemaName . "." . $entityName);
