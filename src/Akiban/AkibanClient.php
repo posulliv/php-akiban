@@ -47,53 +47,33 @@ class AkibanClient extends Client
 
     public function getEntity($entityName, $entityId, $schemaName = null)
     {
-        $entityPath = $schemaName === null ? $entityName : $schemaName . "." . $entityName;
+        $entityPath = $this->constructEntityPath($entityName, $schemaName);
         $command = $this->getCommand('GetEntity', array('name' => $entityPath, 'id' => $entityId));
-        try {
-            $response = $this->execute($command);
-        } catch (ClientErrorResponseException $e) {
-            return $e->getMessage();
-        }
-        return $response['data'];
+        return $this->executeCommand($command, 'data');
     }
 
     public function createEntity($entityName, $data, $schemaName = null, $createModel = false)
     {
-        $entityPath = $schemaName === null ? $entityName : $schemaName . "." . $entityName;
+        $entityPath = $this->constructEntityPath($entityName, $schemaName);
         if ($createModel) {
             $this->createEntityModel($entityPath, $data);
         }
         $command = $this->getCommand('CreateEntity', array('name' => $entityPath, 'data' => $data));
         $command->set('command.headers', array('Content-type' => 'application/json'));
-        try {
-            $response = $this->execute($command);
-        } catch (ClientErrorResponseException $e) {
-            return $e->getMessage();
-        }
-        return $response['data'];
+        return $this->executeCommand($command, 'data');
     }
 
     public function deleteEntity($entityName, $entityId, $schemaName = null)
     {
-        $entityPath = $schemaName === null ? $entityName : $schemaName . "." . $entityName;
+        $entityPath = $this->constructEntityPath($entityName, $schemaName);
         $command = $this->getCommand('DeleteEntity', array('name' => $entityPath, 'id' => $entityId));
-        try {
-            $response = $this->execute($command);
-        } catch (ClientErrorResponseException $e) {
-            return $e->getMessage();
-        }
-        return $response['status'];
+        return $this->executeCommand($command, 'status');
     }
 
     public function executeSqlQuery($sql)
     {
         $command = $this->getCommand('ExecuteQuery', array('q' => $sql));
-        try {
-            $response = $this->execute($command);
-        } catch (ClientErrorResponseException $e) {
-            return $e->getMessage();
-        }
-        return $response['data'];
+        return $this->executeCommand($command, 'data');
     }
 
     public function executeMultipleSqlQueries($queries = array())
@@ -103,24 +83,34 @@ class AkibanClient extends Client
             $sql .= $query . ";";
         }
         $command = $this->getCommand('ExecuteQueries', array('queries' => $sql));
-        try {
-            $response = $this->execute($command);
-        } catch (ClientErrorResponseException $e) {
-            return $e->getMessage();
-        }
-        return $response['data'];
+        return $this->executeCommand($command, 'data');
     }
 
     public function createEntityModel($entityName, $data, $schemaName = null)
     {
-        $entityPath = $schemaName === null ? $entityName : $schemaName . "." . $entityName;
+        $entityPath = $this->constructEntityPath($entityName, $schemaName);
         $command = $this->getCommand('CreateModel', array('name' => $entityPath, 'data' => $data, 'create' => 'true'));
         $command->set('command.headers', array('Content-type' => 'application/json'));
+        return $this->executeCommand($command, 'data');
+    }
+
+    public function getServerVersion()
+    {
+        return $this->executeCommand($this->getCommand('Version'), 'data');
+    }
+
+    private function executeCommand($command, $returnElement)
+    {
         try {
             $response = $this->execute($command);
         } catch (ClientErrorResponseException $e) {
             return $e->getMessage();
         }
-        return $response['data'];
+        return $response[$returnElement];
+    }
+
+    private function constructEntityPath($entityName, $schemaName)
+    {
+        return ($schemaName === null ? $entityName : $schemaName . "." . $entityName);
     }
 }

@@ -3,6 +3,12 @@
     "serviceFullName" : "Akiban Server",
     "signatureVersion" : "v1",
     "operations": {
+        "Version": {
+            "httpMethod": "GET",
+            "uri": "/v1/version",
+            "summary": "Get server version.",
+            "responseClass": "DataOutput"
+        },
         "CreateEntity": {
             "httpMethod": "POST",
             "uri": "/v1/entity/{name}",
